@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Media {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  type        MediaType
+  director    String   @db.VarChar(100)
+  budget      Float?
+  budgetLabel String?  @db.VarChar(50)
+  location    String?  @db.VarChar(100)
+  durationMin Int?
+  year        String?  @db.VarChar(20)
+  notes       String?  @db.Text
+  posterUrl   String?  @db.VarChar(500)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum MediaType {
+  MOVIE
+  TV_SHOW
+}
