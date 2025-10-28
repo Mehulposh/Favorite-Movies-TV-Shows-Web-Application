@@ -5,7 +5,7 @@ import { MediaForm } from './components/MediaForm';
 
 // Modal styling
 const modalStyle = {
-  position: "absolute" as "absolute",
+  position: "absolute" ,
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
@@ -26,10 +26,14 @@ const App = () => {
   return (
     <div className="min-h-screen bg-gray-200 p-6">
       <header className="max-w-6xl mx-auto flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Favorite Movies & TV Shows</h1>
-        <button onClick={handleOpen}>
-          Add +
-        </button>
+        <div className='flex justify-between items-center w-full'>
+          <h1 className="text-2xl font-bold">Favorite Movies & TV Shows</h1>
+          <button 
+            className='bg-green-500 px-3 py-2 rounded text-white cursor-pointer'
+            onClick={handleOpen}>
+            Add +
+          </button>
+        </div>
         <Modal
           open={open}
           onClose={handleClose}
