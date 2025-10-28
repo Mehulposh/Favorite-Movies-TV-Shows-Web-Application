@@ -8,9 +8,9 @@ import {
 
 const router = Router();
 
-router.post("/", createMedia);
-router.get("/", getMediaList);
-router.put("/:id", updateMedia);
-router.delete("/:id", deleteMedia);
+router.post("/newMedia", createMedia);
+router.get("/getMedia", getMediaList);
+router.put("/update/:id", updateMedia);
+router.delete("/delete/:id", deleteMedia);
 
 export default router;
