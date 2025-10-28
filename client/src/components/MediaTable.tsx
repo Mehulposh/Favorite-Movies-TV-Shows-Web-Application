@@ -2,6 +2,7 @@ import  { useState,useRef, useEffect }  from 'react'
 import { useMediaList, useDeleteMedia } from "../hooks/MediaHooks";
 import { Modal, Box } from "@mui/material"
 import { MediaForm } from './MediaForm';
+import type { MediaItem } from '../types/MediaTypes';
 
 // Modal styling
 const modalStyle = {
@@ -18,8 +19,13 @@ const modalStyle = {
   p: 4
 };
 
-const MediaTable = () => {
-  const [editingItem, setEditingItem] = useState<any | null>(null);
+interface MediaTableProps {
+  search: string;
+  filter: string;
+}
+
+const MediaTable = ({ search, filter }: MediaTableProps) => {
+  const [editingItem, setEditingItem] = useState<MediaItem | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
@@ -50,13 +56,29 @@ const MediaTable = () => {
     observerRef.current.observe(loadMoreRef.current);
 
     return () => observerRef.current?.disconnect();
-  }, [loadMoreRef.current, hasNextPage]);
+  }, [ hasNextPage,fetchNextPage]);
 
    if (isLoading) return <div>Loading...</div>;
 
-  const items = data?.pages.flatMap((p: any) => p.items) ?? [];
+  const items: MediaItem[] = data?.pages.flatMap((p) => p.items) ?? [];
 
+  // ✅ Apply client-side filtering
+  const filteredItems = items.filter(item => {
+    // Search: match title, director, location (case-insensitive)
+    const matchesSearch = 
+      search === '' ||
+      item.title.toLowerCase().includes(search.toLowerCase()) ||
+      item.director.toLowerCase().includes(search.toLowerCase()) ||
+      (item.location && item.location.toLowerCase().includes(search.toLowerCase()));
 
+    // Filter: match type or show all
+   
+    
+    const matchesFilter = 
+      filter === 'all' || filter === '' || item.type === filter;
+
+    return matchesSearch && matchesFilter;
+  });
   return (
     <div className="bg-gray-500 shadow rounded">
         <table className="min-w-full table-auto">
@@ -74,7 +96,7 @@ const MediaTable = () => {
             </thead>
 
              <tbody>
-          {items.map((m: any) => (
+          {filteredItems.map((m) => (
             <tr key={m.id} className="border-t border-white text-white">
               <td className="p-2">{m.title}</td>
               <td className="p-2">{m.type === "MOVIE" ? "Movie" : "TV Show"}</td>
@@ -106,6 +128,10 @@ const MediaTable = () => {
         </tbody>
         </table>
 
+        {filteredItems.length === 0 && (
+          <div className="p-4 text-center">No media found</div>
+        )}
+
         <div ref={loadMoreRef} className="p-4 text-center">
           {isFetchingNextPage ? "Loading more..." : hasNextPage ? "Scroll to load more" : "No more records"}
         </div>
@@ -117,7 +143,7 @@ const MediaTable = () => {
         >
           
          <Box sx={modalStyle}>
-          <MediaForm onClose={() => setIsModalOpen(false)} defaultValues={editingItem} />
+          <MediaForm onClose={() => setIsModalOpen(false)} defaultValues={editingItem ?? undefined} />
          </Box>
         </Modal>
     </div>

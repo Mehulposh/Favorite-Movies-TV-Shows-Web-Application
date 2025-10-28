@@ -2,6 +2,7 @@ import {useState} from 'react'
 import { Modal, Box } from "@mui/material"
 import MediaTable from './components/MediaTable';
 import { MediaForm } from './components/MediaForm';
+import Navbar from './components/navBar';
 
 // Modal styling
 const modalStyle = {
@@ -21,19 +22,22 @@ const modalStyle = {
 
 const App = () => {
   const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState('')
+  const [filter, setFilter] = useState('')
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
     <div className="min-h-screen bg-gray-200 p-6">
+      <Navbar search={search} setSearch={setSearch} filter={filter} setFilter={setFilter}/>
       <header className="max-w-6xl mx-auto flex items-center justify-between">
-        <div className='flex justify-between items-center w-full'>
+        
           <h1 className="text-2xl font-bold">Favorite Movies & TV Shows</h1>
           <button 
             className='bg-green-500 px-3 py-2 rounded text-white cursor-pointer'
             onClick={handleOpen}>
             Add +
           </button>
-        </div>
+       
         <Modal
           open={open}
           onClose={handleClose}
@@ -47,7 +51,7 @@ const App = () => {
       </header>
 
       <main className="max-w-6xl mx-auto mt-6">
-        <MediaTable/>
+        <MediaTable search={search} filter={filter}/>
       </main>
     </div>
   );
