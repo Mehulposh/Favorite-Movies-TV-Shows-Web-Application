@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 app.use("/api/media", mediaRoutes);
 app.get("/", (req, res) => res.send("Favorite Media API"));

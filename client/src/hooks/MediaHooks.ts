@@ -7,7 +7,17 @@ const PAGE_SIZE = 20;
 interface MediaItem {
   id: number;
   title: string;
-  // Add other media properties as needed
+  type: "MOVIE" | "TV_SHOW";
+  director: string;
+  budget?: number;
+  budgetLabel?: string;
+  location?: string;
+  durationMin?: number;
+  year?: string;
+  notes?: string;
+  posterUrl?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 interface MediaListResponse {
@@ -19,7 +29,15 @@ interface MediaListResponse {
 
 interface CreateMediaPayload {
   title: string;
-  // Add other required fields
+  type: "MOVIE" | "TV_SHOW";
+  director: string;
+  budget?: number;
+  budgetLabel?: string;
+  location?: string;
+  durationMin?: number;
+  year?: string;
+  notes?: string;
+  posterUrl?: string;
 }
 
 interface UpdateMediaPayload {
@@ -31,7 +49,7 @@ export function useMediaList() {
   return useInfiniteQuery({
     queryKey: ["mediaList"],
     queryFn: async ({ pageParam = 1 }) => {
-      const res = await api.get<MediaListResponse>("/media", {
+      const res = await api.get<MediaListResponse>("/getMedia", {
         params: { page: pageParam, limit: PAGE_SIZE }
       });
       return res.data;
@@ -48,7 +66,7 @@ export function useMediaList() {
 export function useCreateMedia() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (payload: CreateMediaPayload) => api.post("/media", payload),
+    mutationFn: (payload: CreateMediaPayload) => api.post("/newMedia", payload),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["mediaList"] });
     }
@@ -59,7 +77,7 @@ export function useUpdateMedia() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ id, data }: UpdateMediaPayload) => 
-      api.put(`/media/${id}`, data),
+      api.put(`/update/${id}`, data),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["mediaList"] });
     }
@@ -69,7 +87,7 @@ export function useUpdateMedia() {
 export function useDeleteMedia() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) => api.delete(`/media/${id}`),
+    mutationFn: (id: number) => api.delete(`/delete/${id}`),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["mediaList"] });
     }

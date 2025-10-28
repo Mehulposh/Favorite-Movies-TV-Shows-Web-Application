@@ -5,7 +5,9 @@ import { createMediaSchema, updateMediaSchema } from "../validators/mediaValidat
 type CreateMediaInput = z.infer<typeof createMediaSchema>;
 type UpdateMediaInput = z.infer<typeof updateMediaSchema>;
 
-export async function createMedia(data: CreateMediaInput) {
+export async function createMediaInDB(data: CreateMediaInput) {
+  console.log('Data',data);
+  
   return await prisma.media.create({ data });
 }
 

@@ -3,10 +3,29 @@ import { z } from "zod";
 import * as mediaService from "../services/mediaServices";
 import { createMediaSchema, updateMediaSchema } from "../validators/mediaValidators";
 
+
 export async function createMedia(req: Request, res: Response) {
+   console.log('Received body:', req.body);
+  console.log('Type of body:', typeof req.body); // 🔍 Add this
+  console.log('Is plain object?', req.body.constructor === Object); 
+
+  const rawBody = req.body;
+
+  const cleanedBody = {
+    ...rawBody,
+    posterUrl: rawBody.posterUrl === '' ? undefined : rawBody.posterUrl,
+    // Clean other empty strings if needed
+  };
+
   try {
-    const parsed = createMediaSchema.parse(req.body);
-    const media = await mediaService.createMedia(parsed);
+
+    const parsed = createMediaSchema.parse(cleanedBody);
+    console.log(parsed);
+    
+    
+    const media = await mediaService.createMediaInDB(parsed);
+    console.log(media);
+    
     res.status(201).json(media);
   } catch (err) {
     if (err instanceof z.ZodError) {
