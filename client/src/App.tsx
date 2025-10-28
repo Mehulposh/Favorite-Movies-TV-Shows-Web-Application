@@ -1,6 +1,23 @@
-import React,{useState} from 'react'
-import  Modal  from '@mui/material/Modal';
+import {useState} from 'react'
+import { Modal, Box } from "@mui/material"
 import MediaTable from './components/MediaTable';
+import { MediaForm } from './components/MediaForm';
+
+// Modal styling
+const modalStyle = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: { xs: "90%", sm: 500, md: 600 },
+  maxHeight: "90vh",
+  overflow: "auto",
+  bgcolor: "background.paper",
+  borderRadius: 2,
+  boxShadow: 24,
+  p: 4
+};
+
 
 const App = () => {
   const [open, setOpen] = useState(false);
@@ -16,10 +33,12 @@ const App = () => {
         <Modal
           open={open}
           onClose={handleClose}
-          className='bg-white'
+         
         >
           
-          <p>jhdfuidhf</p>
+         <Box sx={modalStyle}>
+          <MediaForm onClose={handleClose}/>
+         </Box>
         </Modal>
       </header>
 
