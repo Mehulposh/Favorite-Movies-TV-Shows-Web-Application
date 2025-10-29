@@ -4,6 +4,7 @@
 - Frontend: React + Vite + TypeScript + TailwindCSS + Material UI + react-query + react-hook-form
 - Backend: Node.js + Express + TypeScript + Prisma + MySQL
 - Validation: Zod
+- Database - MySQL  (Deployed on Railway)
 
 ## Setup (Backend)
 1. cd server
