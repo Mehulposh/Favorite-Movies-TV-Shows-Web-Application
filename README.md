@@ -28,5 +28,14 @@ Open `http://localhost:5173` (or the port Vite reports).
 - `PUT /api/media/update/:id` — update
 - `DELETE /api/media/delete/:id` — delete
 
+
+## Features
+- Add new movie or tv show
+- Edit existing movie or tv show
+- Delete existing movie or tv show
+- Search based on title, location and director
+- Filter only movies , tv show or all
+- Infinite scrolling loads new entries when scrolled to the end
+
 ## Notes
 - Use `prisma studio` to inspect DB: `npx prisma studio`
